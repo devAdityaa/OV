@@ -58,7 +58,6 @@ const gptController = {
     },
 
     getVocalResponse : (req,res)=>{
-        console.log("VOCAL PRESSED!", req.body.text)
         const text = req.body.text;
         const response = vocalResponse.vocal_ttsResponse(text)
         .then(response=>{

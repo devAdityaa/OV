@@ -37,8 +37,6 @@ const vocalResponse = {
 
             const base64Data = buffer.toString('base64'); // Convert buffer to base64 string
 
-            console.log('Base64 Data:', base64Data);
-
             return { audioDataUrl: base64Data };
         } catch (error) {
             console.error('Error:', error);

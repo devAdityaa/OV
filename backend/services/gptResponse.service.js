@@ -16,7 +16,6 @@ const gptResponse = {
             apiKey: process.env.OPENAI_API_KEY
         });
         try{
-            console.log(prompt)
          prompt.messages[0].content += shortPrompt
             const response = await client.chat.completions.create({
                 model: "gpt-3.5-turbo",
@@ -137,7 +136,6 @@ const gptResponse = {
     });
     try{
         prompt[0].content += questionPrompt
-        console.log("Services: ",prompt)
         const response = await client.chat.completions.create({
             model: "gpt-3.5-turbo",
             messages: prompt,
