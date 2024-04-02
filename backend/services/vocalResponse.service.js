@@ -1,20 +1,57 @@
-
+const User = require('../database/user.model');
+const jwt = require('jsonwebtoken')
 const fetch = require('node-fetch');
 require("dotenv").config();
 
+
+
+const useCredits = async (user,service) =>{
+    if(service==='genVoice'){
+        const amt = 5
+        if(user.messagesLeft>=amt){
+            user.messagesLeft-=5
+            await user.save()
+            return 1
+        }      
+        else
+            return -1
+    }
+    else if(service==='tts'){
+        const amt = 5
+        if(user.messagesLeft>=amt){
+            user.messagesLeft-=5
+            await user.save()
+            return 1
+        }      
+        else
+            return -1
+    }
+}
+
+
 const vocalResponse = {
-    vocal_ttsResponse: async (prompt) => {
-        const elevenlabs_key = 'bd495903759ed40c7abaa066bcd10a68';
-        const voiceId = '8wz1bDBxKzlqXCHg578k';
+    vocal_ttsResponse: async (token, prompt, voiceSettings) => {
+
+        try{
+            const verifyToken = jwt.verify(jwtToken, 'secretKey')
+            const user_id = verifyToken.userId
+            const user = await User.findOne({_id : user_id});
+            const flag = useCredits(user,'genVoice')
+            if(flag===1){
+
+
+        const elevenlabs_key = process.env.ELVAPI;
+        const voiceId = user.aiVoiceId;
         const base_url = "https://api.elevenlabs.io";
         const body = {
             text: prompt,
-            voice_settings: {
-                similarity_boost: 1,
-                stability: 0.5,
-                style: 1,
-                use_speaker_boost: true
-            }
+            vocie_settings:voiceSettings
+            // voice_settings: {
+            //     similarity_boost: 1,
+            //     stability: 0.5,
+            //     style: 1,
+            //     use_speaker_boost: true
+            // }
         };
 
         const headers = {
@@ -39,8 +76,60 @@ const vocalResponse = {
 
             return { audioDataUrl: base64Data };
         } catch (error) {
-            console.error('Error:', error);
-            return null;
+            
+            return -1;
+        }
+    }
+    else{
+        return -2
+    }
+}
+catch(e){
+    return -1
+}
+    },
+
+    genVoice : async (jwtToken, genOptions)=>{
+        try{
+            const verifyToken = jwt.verify(jwtToken, 'secretKey')
+            const user_id = verifyToken.userId
+            const user = await User.findOne({_id : user_id});
+            const flag = useCredits(user,'genVoice')
+            if(flag===1){
+                const options = {
+                    method: 'POST',
+                    headers: {
+                      'xi-api-key': process.env.ELVAPI,
+                      'Content-Type': 'application/json',
+                     
+                    },
+                    body: JSON.stringify(genOptions)//'{"accent":"british","accent_strength":1,"age":"middle_aged","gender":"female","text":"qwwqewe"}'
+                  };
+                  try {
+                  const response = await fetch('https://api.elevenlabs.io/v1/voice-generation/generate-voice', options)
+                  if (!response.ok) {
+                      throw new Error('Failed to fetch');
+                  }
+                  const buffer = await response.buffer(); // Read response as buffer
+                  const base64Data = buffer.toString('base64'); // Convert buffer to base64 string
+                  return { audioDataUrl: base64Data };
+
+                  }
+                  catch(e){
+                      return -1
+                  }
+            }
+            else{
+                return -2
+            }
+
+      
+
+
+        }
+        catch(e){
+            console.log(e)
+            return -1
         }
     }
 };

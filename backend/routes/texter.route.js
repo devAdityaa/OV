@@ -12,8 +12,8 @@ router.post('/vocalPpv', gptController.getPpvResponse);
 router.post('/vocalQuestion', gptController.getQuestionResponse);
 router.post('/vocalSexting', gptController.getSextingResponse);
 router.post('/vocalTTS', gptController.getVocalResponse);
-
-
+router.post('/generateVoice', gptController.genVoice);
+router.post('/updatePrompts', gptController.updatePrompts);
 
 
 module.exports = router;

@@ -9,6 +9,11 @@ const userSchema =  new mongoose.Schema({
     messagesLeft: {type: Number, default:0},
     linkedAccounts: {type:Number, default:0},
     linked_accounts_info: {type:Array, default:[]},
+    aiVoiceId: {type:String, default:''},
+    texting_prompt: {type:String, default: ''},
+    ppv_prompt: {type:String, default:''},
+    sexting_prompt: {type:String, default: ''},
+    question_prompt: {type:String, default:''},
     createdAt: { type: Date, default: Date.now },
   });
 
