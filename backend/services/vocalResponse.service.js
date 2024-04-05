@@ -33,13 +33,11 @@ const vocalResponse = {
     vocal_ttsResponse: async (token, prompt, voiceSettings) => {
 
         try{
-            const verifyToken = jwt.verify(jwtToken, 'secretKey')
+            const verifyToken = jwt.verify(token, 'secretKey')
             const user_id = verifyToken.userId
             const user = await User.findOne({_id : user_id});
-            const flag = useCredits(user,'genVoice')
-            if(flag===1){
-
-
+            const flag = await useCredits(user,'genVoice')
+if(flag===1){
         const elevenlabs_key = process.env.ELVAPI;
         const voiceId = user.aiVoiceId;
         const base_url = "https://api.elevenlabs.io";
@@ -67,6 +65,7 @@ const vocalResponse = {
             });
 
             if (!response.ok) {
+		    console.log(response)
                 throw new Error('Failed to fetch');
             }
 
@@ -76,7 +75,7 @@ const vocalResponse = {
 
             return { audioDataUrl: base64Data };
         } catch (error) {
-            
+        console.log("Unexpected error while generating audio",error)
             return -1;
         }
     }
@@ -85,6 +84,7 @@ const vocalResponse = {
     }
 }
 catch(e){
+	console.log("UnexpectedError",e)
     return -1
 }
     },

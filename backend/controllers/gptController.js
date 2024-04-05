@@ -54,8 +54,9 @@ const gptController = {
     getTextingResponse : async (req,res)=>{
         //[{ 'role': 'user', 'content': `${command.body.text}` }];
         try{
+		console.log("Received Texting", req.headers.authorization, req.body);
             let token = req.headers.authorization
-            const messages = req.body.messages
+            const messages = req.body
             if(token){
                 if(token.includes('Bearer'))
                 token = token.split(' ')[1]
@@ -144,13 +145,18 @@ const gptController = {
 
     getVocalResponse : async (req,res)=>{
         try{
+		console.log("received vocal req",req.body)
             let token = req.headers.authorization
             const text = req.body.text;
-            const voiceSettings = req.body.settings
+	    let voiceSettings;
+	    if(req.body.settings)
+            voiceSettings = req.body.settings
+	    else
+		voiceSettings = { similarity_boost: 1, stability: 0.5, style: 1, use_speaker_boost: true}
             if(token){
-
-        
-        const response = await vocalResponse.vocal_ttsResponse(text, voiceSettings)
+	if(token.includes('Bearer'))
+		token = token.split(' ')[1]
+        const response = await vocalResponse.vocal_ttsResponse(token, text, voiceSettings)
         if(response!==-1 && response!==-2){
             res.status(200).send({statusCode:100,'audioDataUrl':response.audioDataUrl})
         }
@@ -162,6 +168,7 @@ const gptController = {
         }
     }
 } catch(e){
+	console.log("Error in controller", e)
     res.status(500).send({statusCode:99,message:'Something went wrong'})
 }
        

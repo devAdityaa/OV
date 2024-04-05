@@ -45,19 +45,6 @@ const updateVoiceId = async (newId, user)=>{
 
 
 const protectedService = {
-    userInfo : async (jwtToken)=>{
-        try{
-            const verifyToken = jwt.verify(jwtToken, 'secretKey')
-            const user_id = verifyToken.userId
-            const user = await User.findOne({_id : user_id});
-            return {email:user.email,name:user.name, subscription:user.subscription, messagesLeft:user.messagesLeft, currentPlan:user.currentPlan, linkedAccounts:user.linkedAccounts, texting:user.texting_prompt,sexting: user.sexting_prompt,question:user.question_prompt,ppv:user.ppv_prompt}
-        }
-        catch(e){
-            return -1
-        }
-        
-    },
-
     setOfAccounts : async (jwtToken, accounts)=>{
         try{
             const verifyToken = jwt.verify(jwtToken, 'secretKey')

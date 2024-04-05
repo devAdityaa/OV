@@ -16,9 +16,10 @@ const sextingPrompt = '\n !important: Elevate the conversation with a sexier, na
 
 const useCredits = async (token,service) =>{
     try{
-        const verifyToken = jwt.verify(jwtToken, 'secretKey')
+        const verifyToken = jwt.verify(token, 'secretKey')
         const user_id = verifyToken.userId
         const user = await User.findOne({_id : user_id});
+	   console.log("User:",user,user.messagesLeft>=2)
 
         if(service==='short-res' || service==='long-res'){
             const amt = 2
@@ -77,6 +78,7 @@ const useCredits = async (token,service) =>{
 
     }
     catch(e){
+	    console.log("Error Encountered!",e)
         return [-2]
     }
     
@@ -123,6 +125,7 @@ const gptResponse = {
                 apiKey: process.env.OPENAI_API_KEY
             });
             try{
+		    console.log("Long",prompt)
              prompt.messages[0].content += longPrompt
                 const response = await client.chat.completions.create({
                     model: "gpt-3.5-turbo",
@@ -133,7 +136,7 @@ const gptResponse = {
                 return responseText;
             }
             catch(e){
-                let errorMsg;
+                console.log("Unexpected Error",e)
                 return -2
             }
         }
@@ -151,6 +154,8 @@ const gptResponse = {
                 apiKey: process.env.OPENAI_API_KEY
             });
             try{
+		    console.log("texting:",prompt)
+		   
              prompt.messages[0].content += textingPrompt+flag[1]
                 const response = await client.chat.completions.create({
                     model: "gpt-3.5-turbo",
@@ -161,7 +166,7 @@ const gptResponse = {
                 return responseText;
             }
             catch(e){
-                let errorMsg;
+               console.log("Unexpected error",e)
                 return -2
             }
         }
@@ -182,17 +187,20 @@ const gptResponse = {
                 apiKey: process.env.OPENAI_API_KEY
             });
             try{
-             prompt.messages[0].content += ppvPrompt+flag[1]
+		    console.log("ppv",prompt)
+		 
+             prompt[0].content += ppvPrompt+flag[1]
                 const response = await client.chat.completions.create({
                     model: "gpt-3.5-turbo",
-                    messages:prompt.messages,
+                    messages:prompt,
                     temperature: 1.5
                 });
+		   
                 const responseText = response.choices[0]['message']['content'];
                 return responseText;
             }
             catch(e){
-                let errorMsg;
+               	console.log("Unexpected Error",e)
                 return -2
             }
         }
@@ -213,10 +221,10 @@ const gptResponse = {
             apiKey: process.env.OPENAI_API_KEY
         });
         try{
-         prompt.messages[0].content += questionPrompt+flag[1]
+         prompt[0].content += questionPrompt+flag[1]
             const response = await client.chat.completions.create({
                 model: "gpt-3.5-turbo",
-                messages:prompt.messages,
+                messages:prompt,
                 temperature: 1.5
             });
             const responseText = response.choices[0]['message']['content'];
@@ -243,10 +251,10 @@ const gptResponse = {
                 apiKey: process.env.OPENAI_API_KEY
             });
             try{
-             prompt.messages[0].content += sextingPrompt+flag[1]
+             prompt[0].content += sextingPrompt+flag[1]
                 const response = await client.chat.completions.create({
                     model: "gpt-3.5-turbo",
-                    messages:prompt.messages,
+                    messages:prompt,
                     temperature: 1.5
                 });
                 const responseText = response.choices[0]['message']['content'];
@@ -276,7 +284,7 @@ const gptResponse = {
             user.ppv_prompt = prompts.ppv,
             user.question_prompt = prompts.question
             await user.save()
-            1
+       
         }
         catch(e){
             return -1

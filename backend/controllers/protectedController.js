@@ -58,7 +58,7 @@ const protectedController = {
             if(token){
                 if(token.includes('Bearer'))
                 token = token.split(' ')[1]
-                const getVoiceId = await protectedService.cloneVoice(token, req.body.audioFiles)
+                const getVoiceId = await protectedService.cloneVoice(token, req.body.audioFiles, req.body.description)
                 if(getVoiceId!==-1){
                     res.status(200).json({statusCode:100})
                 }
