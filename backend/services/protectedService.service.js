@@ -66,7 +66,7 @@ const protectedService = {
             if(!user)
                 throw new Error("User not found")
             user['linked_accounts_info'] = accounts
-            console.log(user)
+            user["linkedAccounts"] = accounts.length
             await user.save();
             return 1
         }
