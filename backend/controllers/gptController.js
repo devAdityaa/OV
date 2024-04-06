@@ -2,71 +2,218 @@ const gptResponse = require('../services/gptResponse.service')
 const vocalResponse = require('../services/vocalResponse.service')
 const gptController = {
 
-    getShortResponse : (req,res)=>{
+    getShortResponse : async(req,res)=>{
         //[{ 'role': 'user', 'content': `${command.body.text}` }];
-    const messages = req.body.messages
-        const response = gptResponse.shortResponse(messages)
-        .then((responseText=>{
-            res.send({'short-response':responseText})
-        }))
+        try{
+            let token = req.headers.authorization
+            const messages = req.body.messages
+            if(token){
+                if(token.includes('Bearer'))
+                token = token.split(' ')[1]
+                const response = await gptResponse.shortResponse(token, messages)
+                if(response!==-1 && response!==-2){
+                    res.status(200).json({statusCode:100,'short-response':response})
+                }
+                else if(response===-1)
+                    res.status(500).json({statusCode:99, message:'Not Enough Credits'})
+                else
+                    res.status(500).json({statusCode:99, message:'Something Went Wrong'})
+            }
+        }
+        catch(e){
+            res.status(500).json({statusCode:99 ,  message:'Something Went Wrong'})
+        }
+    
+        
+    
+    
         
     },
-    getLongResponse : (req,res)=>{
+    getLongResponse : async (req,res)=>{
         //[{ 'role': 'user', 'content': `${command.body.text}` }];
-    const messages = req.body.messages
-        const response = gptResponse.shortResponse(messages)
-        .then((responseText=>{
-            res.send({'long-response':responseText})
-        }))
+        try{
+            let token = req.headers.authorization
+            const messages = req.body.messages
+            if(token){
+                if(token.includes('Bearer'))
+                token = token.split(' ')[1]
+                const response = await gptResponse.longResponse(token, messages)
+                if(response!==-1 && response!==-2){
+                    res.status(200).json({statusCode:100,'long-response':response})
+                }
+                else if(response===-1)
+                    res.status(500).json({statusCode:99, message:'Not Enough Credits'})
+                else
+                    res.status(500).json({statusCode:99, message:'Something Went Wrong'})
+            }
+        }
+        catch(e){
+            res.status(500).json({statusCode:99 ,  message:'Something Went Wrong'})
+        }
+    },
+    getTextingResponse : async (req,res)=>{
+        //[{ 'role': 'user', 'content': `${command.body.text}` }];
+        try{
+		console.log("Received Texting", req.headers.authorization, req.body);
+            let token = req.headers.authorization
+            const messages = req.body
+            if(token){
+                if(token.includes('Bearer'))
+                token = token.split(' ')[1]
+                const response = await gptResponse.textingResponse(token, messages)
+                if(response!==-1 && response!==-2){
+                    res.status(200).json({statusCode:100,'texting-response':response})
+                }
+                else if(response===-1)
+                    res.status(500).json({statusCode:99, message:'Not Enough Credits'})
+                else
+                    res.status(500).json({statusCode:99, message:'Something Went Wrong'})
+            }
+        }
+        catch(e){
+            res.status(500).json({statusCode:99 ,  message:'Something Went Wrong'})
+        }
         
     },
-    getTextingResponse : (req,res)=>{
+    getPpvResponse : async (req,res)=>{
         //[{ 'role': 'user', 'content': `${command.body.text}` }];
-    const messages = req.body.messages
-        const response = gptResponse.textingResponse(messages)
-        .then((responseText=>{
-            res.send({'texting-response':responseText})
-        }))
-        
+     try{
+            let token = req.headers.authorization
+            const messages = req.body.messages
+            if(token){
+                if(token.includes('Bearer'))
+                token = token.split(' ')[1]
+                const response = await gptResponse.ppvResponse(token, messages)
+                if(response!==-1 && response!==-2){
+                    res.status(200).json({statusCode:100,'ppv-response':response})
+                }
+                else if(response===-1)
+                    res.status(500).json({statusCode:99, message:'Not Enough Credits'})
+                else
+                    res.status(500).json({statusCode:99, message:'Something Went Wrong'})
+            }
+        }
+        catch(e){
+            res.status(500).json({statusCode:99 ,  message:'Something Went Wrong'})
+        }
     },
-    getPpvResponse : (req,res)=>{
+    getQuestionResponse : async (req,res)=>{
         //[{ 'role': 'user', 'content': `${command.body.text}` }];
-    const messages = req.body.messages
-        const response = gptResponse.ppvResponse(messages)
-        .then((responseText=>{
-            res.send({'ppv-response':responseText})
-        }))
-        
+        try{
+            let token = req.headers.authorization
+            const messages = req.body.messages
+            if(token){
+                if(token.includes('Bearer'))
+                token = token.split(' ')[1]
+                const response = await gptResponse.questionResponse(token, messages)
+                if(response!==-1 && response!==-2){
+                    res.status(200).json({statusCode:100,'question-response':response})
+                }
+                else if(response===-1)
+                    res.status(500).json({statusCode:99, message:'Not Enough Credits'})
+                else
+                    res.status(500).json({statusCode:99, message:'Something Went Wrong'})
+            }
+        }
+        catch(e){
+            res.status(500).json({statusCode:99 ,  message:'Something Went Wrong'})
+        }
     },
-    getQuestionResponse : (req,res)=>{
+    getSextingResponse : async (req,res)=>{
         //[{ 'role': 'user', 'content': `${command.body.text}` }];
-    const messages = req.body.messages
-        const response = gptResponse.questionResponse(messages)
-        .then((responseText=>{
-            res.send({'question-response':responseText})
-        }))
-        
-    },
-    getSextingResponse : (req,res)=>{
-        //[{ 'role': 'user', 'content': `${command.body.text}` }];
-    const messages = req.body.messages
-        const response = gptResponse.sextingResponse(messages)
-        .then((responseText=>{
-            res.send({'sexting-response':responseText})
-        }))
+        try{
+            let token = req.headers.authorization
+            const messages = req.body.messages
+            if(token){
+                if(token.includes('Bearer'))
+                token = token.split(' ')[1]
+                const response = await gptResponse.sextingResponse(token, messages)
+                if(response!==-1 && response!==-2){
+                    res.status(200).json({statusCode:100,'sexting-response':response})
+                }
+                else if(response===-1)
+                    res.status(500).json({statusCode:99, message:'Not Enough Credits'})
+                else
+                    res.status(500).json({statusCode:99, message:'Something Went Wrong'})
+            }
+        }
+        catch(e){
+            res.status(500).json({statusCode:99 ,  message:'Something Went Wrong'})
+        }
         
     },
 
-    getVocalResponse : (req,res)=>{
-        console.log("VOCAL PRESSED!", req.body.text)
-        const text = req.body.text;
-        const response = vocalResponse.vocal_ttsResponse(text)
-        .then(response=>{
-            console.log({'audioUrl':response.audioDataUrl})
-            res.send({'audioDataUrl':response.audioDataUrl})
-        })
-       
+    getVocalResponse : async (req,res)=>{
+        try{
+		console.log("received vocal req",req.body)
+            let token = req.headers.authorization
+            const text = req.body.text;
+	    let voiceSettings;
+	    if(req.body.settings)
+            voiceSettings = req.body.settings
+	    else
+		voiceSettings = { similarity_boost: 1, stability: 0.5, style: 1, use_speaker_boost: true}
+            if(token){
+	if(token.includes('Bearer'))
+		token = token.split(' ')[1]
+        const response = await vocalResponse.vocal_ttsResponse(token, text, voiceSettings)
+        if(response!==-1 && response!==-2){
+            res.status(200).send({statusCode:100,'audioDataUrl':response.audioDataUrl})
+        }
+        else if(response===-2){
+            res.status(500).send({statusCode:99,message:'Not enough credits'})
+        }
+        else{
+            res.status(500).send({statusCode:99,message:'Something went wrong'})
+        }
     }
+} catch(e){
+	console.log("Error in controller", e)
+    res.status(500).send({statusCode:99,message:'Something went wrong'})
+}
+       
+    },
+    genVoice: async (req,res)=>{
+        try{
+            let token = req.headers.authorization
+            if(token){
+                if(token.includes('Bearer'))
+                token = token.split(' ')[1]
+                const getVoice = await vocalResponse.genVoice(token, req.body.genOptions)
+                if(getVoice!==-1 || getVoice!==-2 ){
+                    res.status(200).json({statusCode:100,'audioDataUrl':getVoice.audioDataUrl})
+                }
+                else if(getVoice===-2)
+                res.status(500).json({statusCode:99, message:'Not enough credits'})
+                else
+                    res.status(500).json({statusCode:99, message:'Something went wrong'})
+            }
+        }
+        catch(e){
+            res.status(500).json({statusCode:99,  message:'Something went wrong'})
+        }
+    },
+
+    updatePrompts: async (req, res)=>{
+        try{
+            let token = req.headers.authorization
+            if(token){
+                if(token.includes('Bearer'))
+                token = token.split(' ')[1]
+                const getVoice = await gptResponse.updatePrompts(token, req.body.userPrompts)
+                if(getVoice!==-1){
+                    res.status(200).json({statusCode:100})
+                }
+                else
+                    res.status(500).json({statusCode:99})
+            }
+        }
+        catch(e){
+            res.status(500).json({statusCode:99})
+        }
+    }
+
+   
 }
 
 module.exports = gptController
