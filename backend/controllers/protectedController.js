@@ -70,7 +70,42 @@ const protectedController = {
             res.status(500).json({statusCode:99})
         }
     },
-    
+    createStripeSession: async (req,res)=>{
+        try{
+	    console.log("Creating new stripe session")
+            let token = req.headers.authorization
+            if(token){
+                if(token.includes('Bearer'))
+                token = token.split(' ')[1]
+                const planId = req.headers.plantype
+                const createPaymentSession = await protectedService.createStripeSession(planId,token)
+                if(createPaymentSession===-1){
+                    res.send({statusCode:99, error:'Problem occured while creating payment session'})
+                }
+                else{
+                    res.send({session:createPaymentSession})
+                }
+            }
+            
+        }
+        catch(e){
+            res.status(500).json({statusCode:99})
+        }
+        
+        
+
+    },
+    stripeWebhook: async (req,res)=>{
+        try{
+		console.log("Webhook received:", req.body)
+            const updateBalance = await protectedService.updateUserBalance(await req.body)
+        }
+
+        catch(e){
+            
+        }
+        res.status(200).end()
+    }    
    
 }
 

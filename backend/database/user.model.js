@@ -6,7 +6,8 @@ const userSchema =  new mongoose.Schema({
     password: { type: String, required: true },
     subscription: {type: Boolean, default: false},
     currentPlan: {type: String, default: 'Basic/Free'},
-    messagesLeft: {type: Number, default:0},
+    textMessagesLeft: {type: Number, default:0},
+    voiceMessagesLeft:{type:Number,default:0},
     linkedAccounts: {type:Number, default:0},
     linked_accounts_info: {type:Array, default:[]},
     aiVoiceId: {type:String, default:''},
@@ -14,6 +15,7 @@ const userSchema =  new mongoose.Schema({
     ppv_prompt: {type:String, default:''},
     sexting_prompt: {type:String, default: ''},
     question_prompt: {type:String, default:''},
+    customer_id:{type:String,default:''},
     createdAt: { type: Date, default: Date.now },
   });
 

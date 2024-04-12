@@ -19,12 +19,11 @@ const useCredits = async (token,service) =>{
         const verifyToken = jwt.verify(token, 'secretKey')
         const user_id = verifyToken.userId
         const user = await User.findOne({_id : user_id});
-	   console.log("User:",user,user.messagesLeft>=2)
 
         if(service==='short-res' || service==='long-res'){
-            const amt = 2
-            if(user.messagesLeft>=amt){
-                user.messagesLeft-=amt
+            const amt = 1
+            if(user.textMessagesLeft>=amt){
+                user.textMessagesLeft-=amt
                 await user.save()
                 return [1]
             }      
@@ -32,9 +31,9 @@ const useCredits = async (token,service) =>{
                 return [-1]
         }
         else if(service==='texting'){
-            const amt = 2
-            if(user.messagesLeft>=amt){
-                user.messagesLeft-=amt
+            const amt = 1
+            if(user.textMessagesLeft>=amt){
+                user.textMessagesLeft-=amt
                 await user.save()
                 const prompt = user.texting_prompt
                 return [1,prompt]
@@ -43,9 +42,9 @@ const useCredits = async (token,service) =>{
                 return [-1]
         }
         else if(service==='sexting'){
-            const amt = 2
-            if(user.messagesLeft>=amt){
-                user.messagesLeft-=amt
+            const amt = 1
+            if(user.textMessagesLeft>=amt){
+                user.textMessagesLeft-=amt
                 await user.save()
                 const prompt = user.sexting_prompt
                 return [1,prompt]
@@ -54,9 +53,9 @@ const useCredits = async (token,service) =>{
                 return [-1]
         }
         else if(service==='question'){
-            const amt = 2
-            if(user.messagesLeft>=amt){
-                user.messagesLeft-=amt
+            const amt = 1
+            if(user.textMessagesLeft>=amt){
+                user.textMessagesLeft-=amt
                 await user.save()
                 const prompt = user.question_prompt
                 return [1,prompt]
@@ -65,9 +64,9 @@ const useCredits = async (token,service) =>{
                 return [-1]
         }
         else if(service==='ppv'){
-            const amt = 2
-            if(user.messagesLeft>=amt){
-                user.messagesLeft-=amt
+            const amt = 1
+            if(user.textMessagesLeft>=amt){
+                user.textMessagesLeft-=amt
                 await user.save()
                 const prompt = user.ppv_prompt
                 return [1,prompt]

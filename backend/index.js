@@ -4,7 +4,10 @@ const cors = require('cors');
 const userRouter = require('./routes/texter.route');
 const authRouter = require('./routes/auth.router')
 const protectedRouter = require('./routes/protected.router')
+const stripeRouter = require('./routes/stripe.router')
 const authenticateUser = require('./authMiddleware/jwtAuth')
+require('dotenv').config()
+const stripe = require('stripe')(process.env.STRIPE_SECRET)
 // Create an instance of express
 const bodyParser = require('body-parser');
 const app = express();
@@ -25,6 +28,8 @@ app.use(bodyParser.urlencoded({ extended: true, limit: '50mb' }));
 app.use(express.json());
 app.use(cors())
 app.use((req, res, next) => {
+	console.log(req.url)
+	console.log(req.method)
     res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
@@ -39,9 +44,14 @@ app.get('/test',(req,res)=>{
 app.get('/.well-known/pki-validation/B5ED39FF81F2D0D4C59964DF6AA8F00B.txt', (req,res)=>{
 	res.sendFile(path.join(__dirname,'B5ED39FF81F2D0D4C59964DF6AA8F00B.txt'));
 })
+const webhookEndpoint = stripe.webhookEndpoints.create({
+	enabled_events: ['payment_intent.succeeded', 'payment_intent.payment_failed'],
+	    url: 'https://www.onlyvocal.ai/stripe/stripeWebhook',
+	  }).then(()=>console.log("Stripe webhook listening"))
 app.use('/onlyvocal', authenticateUser, userRouter);
 app.use('/auth',  authRouter)
 app.use('/protected', authenticateUser, protectedRouter)
+app.use('/stripe',stripeRouter)
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
