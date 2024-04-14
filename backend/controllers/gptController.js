@@ -179,7 +179,9 @@ const gptController = {
             if(token){
                 if(token.includes('Bearer'))
                 token = token.split(' ')[1]
+		    console.log("Controller",req.body.genOptions)
                 const getVoice = await vocalResponse.genVoice(token, req.body.genOptions)
+		    console.log("VOice",getVoice)
                 if(getVoice!==-1 || getVoice!==-2 ){
                     res.status(200).json({statusCode:100,'audioDataUrl':getVoice.audioDataUrl})
                 }

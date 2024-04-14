@@ -4,7 +4,10 @@ const cors = require('cors');
 const userRouter = require('./routes/texter.route');
 const authRouter = require('./routes/auth.router')
 const protectedRouter = require('./routes/protected.router')
+const stripeRouter = require('./routes/stripe.router')
 const authenticateUser = require('./authMiddleware/jwtAuth')
+require('dotenv').config()
+const stripe = require('stripe')(process.env.STRIPE_SECRET)
 // Create an instance of express
 const bodyParser = require('body-parser');
 const app = express();
@@ -12,6 +15,7 @@ const path = require('path');
 const fs = require('fs');
 const https = require('https');
 require('./config/database').connect();
+app.use('/stripe', express.raw({type: 'application/json'}), stripeRouter);
 const key = fs.readFileSync('./ssl/private.key');
 const cert = fs.readFileSync('./ssl/certificate.crt');
 
@@ -36,15 +40,21 @@ app.get('/test',(req,res)=>{
 }
 )
 //Verification SSL
-app.get('/.well-known/pki-validation/B5ED39FF81F2D0D4C59964DF6AA8F00B.txt', (req,res)=>{
-	res.sendFile(path.join(__dirname,'B5ED39FF81F2D0D4C59964DF6AA8F00B.txt'));
+app.get('/.well-known/pki-validation/1D46287048AEB88CF3E00BE5F3F86534.txt', (req,res)=>{
+	res.sendFile(path.join(__dirname,'1D46287048AEB88CF3E00BE5F3F86534.txt'));
 })
 app.use('/onlyvocal', authenticateUser, userRouter);
 app.use('/auth',  authRouter)
 app.use('/protected', authenticateUser, protectedRouter)
+
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
+	/*const webhookEndpoint = stripe.webhookEndpoints.create({
+		        enabled_events: ['charge.succeeded','charge.failed','payment_intent.succeeded', 'payment_intent.payment_failed'],
+		            url: 'https://www.onlyvocal.ai/stripe/stripeWebhook',
+         }).then(()=>console.log("Stripe webhook listening"))
+	*/
 });
 
 const httpsServer = https.createServer(creds,app);

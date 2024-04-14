@@ -2,7 +2,7 @@ const User = require('../database/user.model');
 const jwt = require('jsonwebtoken')
 const axios = require('axios')
 require('dotenv').config()
-
+const stripe = require('stripe')(process.env.STRIPE_SECRET)
 
 
 function base64ToBlob(base64String) {
@@ -14,9 +14,9 @@ function base64ToBlob(base64String) {
 
 const useCredits = async (user,service) =>{
     if(service==='tts'){
-        const amt = 5
-        if(user.messagesLeft>=amt){
-            user.messagesLeft-=5
+        const amt = 1
+        if(user.textMessagesLeft>=amt){
+            user.textMessagesLeft-=1
             await user.save()
         }      
         else
@@ -126,7 +126,80 @@ const protectedService = {
         }
     },
 
+    createStripeSession: async (planId,jwtToken)=>{
+        try{
+            const verifyToken = jwt.verify(jwtToken, 'secretKey')
+            const user_id = verifyToken.userId
+            const user = await User.findOne({_id : user_id});
+            if(!user)
+                throw new Error("User not found")
 
+            let planPrice;
+            if(planId==='Starter')
+                planPrice=19
+            else if(planId==='Advanced')
+                planPrice=49
+            else if(planId==='Premium')
+                planPrice=99
+            else
+                return -1
+            const customerId = user.customer_id
+            const createSession = await stripe.checkout.sessions.create({
+                payment_method_types:['card'],
+                customer: customerId,
+                line_items:[{
+                    price_data:{
+                        currency:'usd',
+                        product_data:{
+                            name:`OnlyVocal ${planId} Subscription`   
+                        },
+                        unit_amount:planPrice*100,
+                    },
+                    quantity:1
+                }],
+                
+                mode:'payment',
+                success_url:`https://www.onlyvocal.ai/vocal/onlyfans/plans/${user.email}/payment/success`,
+                cancel_url:`https://www.onlyvocal.ai/vocal/onlyfans/plans/${user.email}/payment/failure`
+               
+            })
+            return createSession.id
+        }
+        catch(e){
+            console.log(e)
+            return -1
+        }
+    },
+    updateUserBalance: async(userObj)=>{
+	const userObjJson = JSON.parse(userObj)
+        const customerId = userObjJson.data.object.customer
+        const user = await User.findOne({customer_id:customerId});
+        const amt = userObjJson.data.object.amount_received
+        let increaseText = 0;
+	let increaseVoice= 0;
+	let newPlan = 'Basic/Free'
+        if(amt===1900){
+        increaseText = 1000;
+	increaseVoice = 1000;
+	newPlan='Starter';
+	}
+        else if(amt===4900){
+        increaseText = 2500;
+	increaseVoice= 2500;
+	newPlan='Advanced';
+	}
+        else if(amt===9900){
+        increaseText = 5000;
+	increaseVoice = 5000;
+	newPlan='Premium';
+	}
+	console.log(increaseText, increaseVoice, newPlan, amt);
+	user.currentPlan=newPlan;
+	console.log(user.currentPlan, newPlan);
+        user.textMessagesLeft += increaseText
+	user.voiceMessagesLeft += increaseVoice
+        await user.save()
+    }
 
    
 

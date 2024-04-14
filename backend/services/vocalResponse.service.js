@@ -7,9 +7,9 @@ require("dotenv").config();
 
 const useCredits = async (user,service) =>{
     if(service==='genVoice'){
-        const amt = 5
-        if(user.messagesLeft>=amt){
-            user.messagesLeft-=5
+        const amt = 1
+        if(user.voiceMessagesLeft>=amt){
+            user.voiceMessagesLeft-=amt
             await user.save()
             return 1
         }      
@@ -17,9 +17,9 @@ const useCredits = async (user,service) =>{
             return -1
     }
     else if(service==='tts'){
-        const amt = 5
-        if(user.messagesLeft>=amt){
-            user.messagesLeft-=5
+        const amt = 1
+        if(user.voiceMessagesLeft>=amt){
+            user.voiceMessagesLeft-=amt
             await user.save()
             return 1
         }      
@@ -94,8 +94,10 @@ catch(e){
             const verifyToken = jwt.verify(jwtToken, 'secretKey')
             const user_id = verifyToken.userId
             const user = await User.findOne({_id : user_id});
-            const flag = useCredits(user,'genVoice')
+            const flag = await useCredits(user,'genVoice')
+		console.log("Vocal flag:",flag)
             if(flag===1){
+		    const base_url = "https://api.elevenlabs.io";
                 const options = {
                     method: 'POST',
                     headers: {
@@ -105,9 +107,11 @@ catch(e){
                     },
                     body: JSON.stringify(genOptions)//'{"accent":"british","accent_strength":1,"age":"middle_aged","gender":"female","text":"qwwqewe"}'
                   };
+		    console.log("GenOptions:",genOptions)
                   try {
-                  const response = await fetch('https://api.elevenlabs.io/v1/voice-generation/generate-voice', options)
+                  const response = await fetch(base_url+'/v1/voice-generation/generate-voice', options)
                   if (!response.ok) {
+			  console.log(response)
                       throw new Error('Failed to fetch');
                   }
                   const buffer = await response.buffer(); // Read response as buffer
@@ -116,6 +120,7 @@ catch(e){
 
                   }
                   catch(e){
+			  console.log(e)
                       return -1
                   }
             }
