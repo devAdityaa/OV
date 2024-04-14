@@ -1,5 +1,6 @@
 const protectedService = require('../services/protectedService.service')
-
+require('dotenv').config()
+const stripe = require('stripe')(process.env.STRIPE_SECRET)
 
 function createAudioFile(audioDataUrl, fileName) {
     const binaryDataString = atob(audioDataUrl.split(',')[1]);
@@ -96,15 +97,25 @@ const protectedController = {
 
     },
     stripeWebhook: async (req,res)=>{
-        try{
-		console.log("Webhook received:", req.body)
-            const updateBalance = await protectedService.updateUserBalance(await req.body)
-        }
-
-        catch(e){
-            
-        }
-        res.status(200).end()
+     try {
+            const sig = req.headers['stripe-signature'];
+            let event;
+	     console.log("sig forwarded:",sig,"Our sig",process.env.STRIPE_ENDPOINT_SECRET);
+            event = stripe.webhooks.constructEvent(req.body, sig, process.env.STRIPE_ENDPOINT_SECRET);
+            switch (event.type) {
+              case 'payment_intent.succeeded':
+                const updateBalance = await protectedService.updateUserBalance(req.body)
+                res.status(200).send(`Success`);
+                break;
+              default:
+                console.log(`Unhandled event type ${event.type}`);
+		res.status(200).send('Unhandled webhook event: only listening to payment_intent.succeeded')
+            }
+          } catch (err) {
+            console.log("Stripe Error", err.message)
+            res.status(400).send(`Webhook Error: ${err.message}`);
+              return;
+            } 
     }    
    
 }

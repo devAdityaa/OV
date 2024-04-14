@@ -171,9 +171,10 @@ const protectedService = {
         }
     },
     updateUserBalance: async(userObj)=>{
-        const customerId = userObj.data.object.customer
+	const userObjJson = JSON.parse(userObj)
+        const customerId = userObjJson.data.object.customer
         const user = await User.findOne({customer_id:customerId});
-        const amt = userObj.data.object.amount_subtotal
+        const amt = userObjJson.data.object.amount_received
         let increaseText = 0;
 	let increaseVoice= 0;
 	let newPlan = 'Basic/Free'
