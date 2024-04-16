@@ -18,14 +18,6 @@ require('./config/database').connect();
 app.use('/stripe', express.raw({type: 'application/json'}), stripeRouter);
 
 
-const key = fs.readFileSync('./ssl/private.key');
-const cert = fs.readFileSync('./ssl/certificate.crt');
-
-const creds = {
-	key,
-	cert
-}
-
 app.use(bodyParser.json({ limit: '50mb' }));
 app.use(bodyParser.urlencoded({ extended: true, limit: '50mb' }));
 app.use(express.json());
@@ -45,7 +37,3 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
-
-const httpsServer = https.createServer(creds,app);
-httpsServer.listen(5175);
-
