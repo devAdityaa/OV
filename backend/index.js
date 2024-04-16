@@ -16,6 +16,8 @@ const fs = require('fs');
 const https = require('https');
 require('./config/database').connect();
 app.use('/stripe', express.raw({type: 'application/json'}), stripeRouter);
+
+
 const key = fs.readFileSync('./ssl/private.key');
 const cert = fs.readFileSync('./ssl/certificate.crt');
 
@@ -35,14 +37,6 @@ app.use((req, res, next) => {
     next();
   });
 
-app.get('/test',(req,res)=>{
-	res.send('This is test')
-}
-)
-//Verification SSL
-app.get('/.well-known/pki-validation/1D46287048AEB88CF3E00BE5F3F86534.txt', (req,res)=>{
-	res.sendFile(path.join(__dirname,'1D46287048AEB88CF3E00BE5F3F86534.txt'));
-})
 app.use('/onlyvocal', authenticateUser, userRouter);
 app.use('/auth',  authRouter)
 app.use('/protected', authenticateUser, protectedRouter)
@@ -50,12 +44,8 @@ app.use('/protected', authenticateUser, protectedRouter)
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
-	/*const webhookEndpoint = stripe.webhookEndpoints.create({
-		        enabled_events: ['charge.succeeded','charge.failed','payment_intent.succeeded', 'payment_intent.payment_failed'],
-		            url: 'https://www.onlyvocal.ai/stripe/stripeWebhook',
-         }).then(()=>console.log("Stripe webhook listening"))
-	*/
 });
 
 const httpsServer = https.createServer(creds,app);
 httpsServer.listen(5175);
+

@@ -116,8 +116,47 @@ const protectedController = {
             res.status(400).send(`Webhook Error: ${err.message}`);
               return;
             } 
-    }    
-   
+    },
+getPayments: async (req, res)=>{
+        try{
+            let token = req.headers.authorization
+            if(token){
+                if(token.includes('Bearer'))
+                token = token.split(' ')[1]
+                const paymentHistory = await protectedService.getPaymentHistory(token)
+                if(paymentHistory===-1){
+                    res.send({statusCode:99, error:'Problem occured while fetching payment history'})
+                }
+                else{
+                    res.send({history:paymentHistory})
+                }
+            }
+            
+        }
+        catch(e){
+            res.status(500).json({statusCode:99})
+        }
+    },
+changePass: async(req,res)=>{
+        try{
+            let token = req.headers.authorization
+            if(token){
+                if(token.includes('Bearer'))
+                token = token.split(' ')[1]
+              
+		const changePassword = await protectedService.changePassword(token, req.body.currentPass, req.body.newPass)
+                if(changePassword!==-1){
+                    res.status(200).json({status:'OK', statusCode:100})
+                }
+                else
+                    res.status(500).json({statusCode:101})
+            }
+        }
+        catch(e){
+            res.status(500).json({statusCode:99})
+        }
+
 }
 
+}
 module.exports = protectedController

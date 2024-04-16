@@ -199,12 +199,51 @@ const protectedService = {
         user.textMessagesLeft += increaseText
 	user.voiceMessagesLeft += increaseVoice
         await user.save()
-    }
+    },
+getPaymentHistory: async(jwtToken)=>{
+        try{
+            const verifyToken = jwt.verify(jwtToken, 'secretKey')
+            const user_id = verifyToken.userId
+            const user = await User.findOne({_id : user_id});
+            if(!user)
+                throw new Error("User not found")
+            const customerId = user.customer_id
+            const paymentIntents = await stripe.paymentIntents.list({
+                customer:customerId,
+                limit: 10,
+            });
+            console.log("Customer Payment Intents:", paymentIntents)
+            return paymentIntents
+        }
+        catch(e){
+            console.log("Error while fetching customer purchase history",e)
+            return -1
+        }
+
+    },
+	changePassword : async (jwtToken, cpass, npass)=>{
+		        try{
+				            const verifyToken = jwt.verify(jwtToken, 'secretKey')
+				            const user_id = verifyToken.userId
+				            const user = await User.findOne({_id : user_id});
+				            if(!user)
+					                throw new Error("User not found")
+				            if(cpass!==user.password)
+						return -1
+					    user.password = npass
+				            await user.save();
+				            return 1
+				        }
+		        catch(e){
+				            console.log("Error,", e)
+				            return -2
+				        }
+
 
    
 
 }
-
+}
 
 
 module.exports = protectedService
