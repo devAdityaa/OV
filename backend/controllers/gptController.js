@@ -54,7 +54,6 @@ const gptController = {
     getTextingResponse : async (req,res)=>{
         //[{ 'role': 'user', 'content': `${command.body.text}` }];
         try{
-		console.log("Received Texting", req.headers.authorization, req.body);
             let token = req.headers.authorization
             const messages = req.body
             if(token){
@@ -66,8 +65,10 @@ const gptController = {
                 }
                 else if(response===-1)
                     res.status(500).json({statusCode:99, message:'Not Enough Credits'})
-                else
+                else{
                     res.status(500).json({statusCode:99, message:'Something Went Wrong'})
+			console.log("Resolved",response);
+		}
             }
         }
         catch(e){
