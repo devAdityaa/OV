@@ -56,8 +56,9 @@ if(flag===1){
             'Content-Type': 'application/json',
             'xi-api-key': elevenlabs_key
         };
-
+        console.log(headers);
         try {
+          
             const response = await fetch(base_url + `/v1/text-to-speech/${voiceId}?output_format=mp3_22050_32`, {
                 method: 'POST',
                 headers: headers,
@@ -74,6 +75,7 @@ if(flag===1){
             const base64Data = buffer.toString('base64'); // Convert buffer to base64 string
 
             return { audioDataUrl: base64Data };
+            
         } catch (error) {
         console.log("Unexpected error while generating audio",error)
             return -1;

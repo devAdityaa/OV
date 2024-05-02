@@ -107,7 +107,7 @@ const protectedService = {
                       .then(response => response.json())
                       .then(async response => {
                         const voiceId = response.voice_id
-                        console.log('voiceId')
+                        console.log('voiceId',voiceId)
                         await updateVoiceId(voiceId,user)
                         return 1
                     })
@@ -133,40 +133,48 @@ const protectedService = {
             const user = await User.findOne({_id : user_id});
             if(!user)
                 throw new Error("User not found")
-
-            let planPrice;
-            if(planId==='Starter')
-                planPrice=19
-            else if(planId==='Advanced')
-                planPrice=49
-            else if(planId==='Premium')
-                planPrice=99
-            else
-                return -1
+          
+            // let planPrice;
+            // if(planId==='Starter')
+            //     planPrice=19
+            // else if(planId==='Advanced')
+            //     planPrice=49
+            // else if(planId==='Premium')
+            //     planPrice=99
+            // else
+            //     return -1
             const customerId = user.customer_id
-            const createSession = await stripe.checkout.sessions.create({
+            if(customerId){
+            let createSession = await stripe.checkout.sessions.create({
                 payment_method_types:['card'],
                 customer: customerId,
-                line_items:[{
-                    price_data:{
-                        currency:'usd',
-                        product_data:{
-                            name:`OnlyVocal ${planId} Subscription`   
-                        },
-                        unit_amount:planPrice*100,
-                    },
-                    quantity:1
+                line_items : [{
+                    'price': planId,
+                    'quantity': 1,
                 }],
-                
-                mode:'payment',
+                mode:'subscription',
                 success_url:`https://www.onlyvocal.ai/vocal/onlyfans/plans/${user.email}/payment/success`,
                 cancel_url:`https://www.onlyvocal.ai/vocal/onlyfans/plans/${user.email}/payment/failure`
                
             })
-            return createSession.id
+            return createSession.url
+        }else{
+            let createSession = await stripe.checkout.sessions.create({
+                payment_method_types:['card'],
+                line_items : [{
+                    'price': planId,
+                    'quantity': 1,
+                }],
+                mode:'subscription',
+                success_url:`https://www.onlyvocal.ai/vocal/onlyfans/plans/${user.email}/payment/success`,
+                cancel_url:`https://www.onlyvocal.ai/vocal/onlyfans/plans/${user.email}/payment/failure`
+               
+            })
+            return createSession.url
+        }
         }
         catch(e){
-            console.log(e)
+            console.log("----",e)
             return -1
         }
     },
