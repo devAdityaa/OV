@@ -7,7 +7,6 @@ const followPoints = `Follow these points: When interacting with fans, focus on 
 
 const wordNotuse = `Word not to use : abduct, abducted, abducting, abduction, admireme, animal, asphyxia, asphyxiate, asphyxiation, asphyxicate, asphyxication, bait, ballbusting, bareback, Bestiality, blacked, blackmail, bleeding, blood, bloodplay, Bukkake, caned, caning, Cannibal, Cashapp, cbt, cervics, Cerviks, Cervix, child, chloroform, chloroformed, chloroforming, choke, choking, coma, comatose, Consent, cp, cycle, diapers, dog, doze, drinking, Drunk, Drunken, eleven, enema, entrance, Escort, Escorting, fancentro, fanfuck, Farm, Fecal, Fetal, fisted, fisting, flogging, foetal, Forced, Forcedbi, Forceful, Forcing, Fuckfan, gangbang, gangbangs, gaping, golden, hardsports, hooker, Hypno, Hypnotize, Hypnotized, Hypnotizing, Inbreed. Inbreeded, Inbreeding, Incapacitate, Incapacitation, Incest, Intox, Inzest, Jail, Jailbait, kidnap, kidnapped, kidnapping, knock, knocked, lactate, Lactation, lolicon, lolita, manyvids, medicalplay, menstrate, menstrual, menstruate, menstruating, menstruation, Meet, Molest, Molested, Molesting, mutilate, mutilation,, paddling, paralyzed, passed, paypal, pee, Peeplay, Pegging, Piss, Pissing, Poo, Poop, Preteen, Prostituted, Prostituting, Prostitution, Pse, scat, showers, Skat, Snuff, Strangled, Strangling, Strangulation, Suffocate, Suffocation, Teen, Toilet, Toiletslave, Toiletslavery, Torture, tortured, trance, twelve, unconscious, unconsciousness, Unwilling, Venmo, Vomit, vomitted, vomitting, watersports, whipping, young,Zoophilia,Abduction, Abduct, Abducting, Abducted, Animal, Admireme, Asphyxiation, Asphyxiated, Asphyxiate, Asphyxiating, Ballbusting, Bait, Bareback, Blackmail, Beastiality, Bleeding, Blood, Bloodplay, Blooded, Blacked, Bukkake, Bestaility, Canned, Canning, CBT, Cashapp, Cannibal, Cervix, Cervicks, Comatose, Coma, Child, Chocked, Choke, Choking, Chokes, Chloroform, Chloroformed, Chloroforming, Cycle, CP, Consent, Drink, Drinking, Drunken, Drunk, Diapers, Doze, Dog, Eleven, Entrance, Escort, Escorted, Escorting, Enema, Fuckfan, Fanfucked, Fecal, Facentro, Foetal, Fisted, Fist, Fisting, Farm, Flogging, Forcing, Force, Forced, Forcing, Forceful, Forcedbi, Fifteen, Gaping, Golden, Gangbang, Gangbanging, Gangbanged, Gangbangs, Hardsports, Hypno, Hypnotize, Hypnotization, Hypnotizing, Hypnotized, Hooker, Inbreed, Inbreeding, Incapacitation, Incapacitate, Inzest, Incest, Intox, Jail, Jailed, Jailbait, Kidnap, Kidnapped, Kidnapping, Kidnapper, Knocked, Knock, Knocking, Lactation, Lactating, Lactate, Lolicon, Lalita, Menstruate, Menstruating, Menstruation, Menstrual, Manyvids, Medical play, Molested, Molesting, Molest, Meet, Mutilated, Mutilate, Mutilating, Mutilation, Necrophilia, Nigger, Paralyze, Paralyzed, Paralyzation, Pee, Peeplay, Pissed, Poo, Pissing, Piss, Poop, Pooped, Pooping, Pegging, Paddling, Paypal, Passed, Prostitution, Prostitute, Prostituting, Pse,  Preteen, Pre-scat, Rapped, Rapping, Rape, Rapist, Restricted, Snuff, Showers, Skat, Strangle, Strangling, Strangled, Suffocate, Suffocation, Suffocated, Teen, Toilet, Torture, Toilet slave, Toilet slavery, Torturing, Tortured, Trance, Twelve, Unconsciousness, Unconscious, Unwilling, Underage, Vomit, Vomited, Vomiting, Vomino, Venmo, Whipped, Whipping, Watersports, Young, Zoophilia.`
 
-
 const creatorDetail = `List of informations about the creator:
 Name: Mandy Hekkins.
 Relationship: Single.
@@ -16,7 +15,6 @@ How the creator wants to be their communication with the fans: Soft and Teasing,
 What are the sort of things the creator sells : Sextape, Toys,Where does the creator work/study brooklyn,Additional information provided by the creator: Keep the messages very short`
 
 const shortPrompt = `Act like an OnlyFans model who is directly chatting with her fan. Generate a short and meaningful response. Keep the response short and quirky.You must not include any reference to the speaker in your response like 'Fan:' or 'You:' or ‘Creator’. You must keep the response in first person.
-
 ${followPoints}
 ${wordNotuse}
 ${creatorDetail}`
@@ -27,40 +25,30 @@ ${wordNotuse}
 ${creatorDetail}`
 
 const textingPrompt = `Act like an OnlyFans model who is directly chatting with her fan. Generate a short and meaningful response. Keep the response short and quirky.You must not include any reference to the speaker in your response like 'Fan:' or 'You:' or ‘Creator’. You must keep the response in first person.
-
- ${followPoints}
- ${wordNotuse}
- ${creatorDetail}`
-
-const ppvPrompt = `Act like an OnlyFans model who is directly chatting with her fan.Generate a short and meaningful response.Your response should be such that the fan will be indulge to buy a pay - per - view(PPV) from your.Your goal is to sell the fan a PPV, you must try to seduce the user if need be.You must not include any reference to the speaker in your response like 'Fan:' or 'You:', keep the response in first person.Keep the messages short and quirky.
-
 ${followPoints}
 ${wordNotuse}
 ${creatorDetail}`
 
+const ppvPrompt = `Act like an OnlyFans model who is directly chatting with her fan.Generate a short and meaningful response.Your response should be such that the fan will be indulge to buy a pay - per - view(PPV) from your.Your goal is to sell the fan a PPV, you must try to seduce the user if need be.You must not include any reference to the speaker in your response like 'Fan:' or 'You:', keep the response in first person.Keep the messages short and quirky.
+${followPoints}
+${wordNotuse}
+${creatorDetail}`
 
 const questionPrompt = `Act like an OnlyFans model who is directly chatting with her fan. Generate a short and meaningful message. Your task is to hit up a conversation with an inactive or dormant Fan. It may be a question or a spicy message. You must not include any reference to the speaker in your response like 'Fan:' or 'You:', keep the response in first person. Keep the messages short and quirky.
-
 ${followPoints}
 ${wordNotuse}
 ${creatorDetail}`
 
 const sextingPrompt = `Act like an OnlyFans model who is directly chatting with her fan. Generate a short and meaningful message. Your goal is to try to seduce the fans through the art of sexting and make the users feel horny. You can use some erotic words to achive your goal. You must not include any reference to your response like 'client:' or 'user:'. Keep the messages short and quirky. \n"+
-
 ${followPoints}
 ${wordNotuse}
 ${creatorDetail}`
-
-
-
-
 
 const useCredits = async (token, service) => {
     try {
         const verifyToken = jwt.verify(token, 'secretKey')
         const user_id = verifyToken.userId
         const user = await User.findOne({ _id: user_id });
-
         if (service === 'short-res' || service === 'long-res') {
             const amt = 1
             if (user.textMessagesLeft >= amt) {
@@ -76,7 +64,6 @@ const useCredits = async (token, service) => {
             if (user.textMessagesLeft >= amt) {
                 user.textMessagesLeft -= amt
                 await user.save()
-
                 const prompt = user.texting_prompt
                 return [1, prompt]
             }
@@ -116,22 +103,14 @@ const useCredits = async (token, service) => {
             else
                 return ("Your have not textmessages credits")
         }
-
     }
     catch (e) {
-        console.log("Error Encountered!", e)
         return [-2]
     }
-
 }
 
-
-
-
 const gptResponse = {
-
     shortResponse: async (token, prompt) => {
-
         const flag = await useCredits(token, 'short-res')
         if (flag[0] === 1) {
             const client = new OpenAI({
@@ -142,14 +121,12 @@ const gptResponse = {
                     role: 'user',
                     content: `${shortPrompt}  ${prompt}`
                 }
-
                 const response = await client.chat.completions.create({
                     model: "gpt-3.5-turbo",
                     messages: [newprompt],
                     temperature: 0.5
                 });
                 const responseText = response.choices[0]['message']['content'];
-                console.log("-----", responseText);
                 return responseText;
             }
             catch (e) {
@@ -164,8 +141,8 @@ const gptResponse = {
         } else {
             return flag;
         }
-
     },
+
     longResponse: async (token, prompt) => {
         const flag = await useCredits(token, 'long-res')
         if (flag[0] === 1) {
@@ -173,12 +150,10 @@ const gptResponse = {
                 apiKey: process.env.OPENAI_API_KEY
             });
             try {
-                console.log("Long", prompt)
                 let newprompt = {
                     role: 'user',
                     content: `${longPrompt}  ${prompt}`
                 }
-
                 const response = await client.chat.completions.create({
                     model: "gpt-3.5-turbo",
                     messages: [newprompt],
@@ -188,7 +163,6 @@ const gptResponse = {
                 return responseText;
             }
             catch (e) {
-                console.log("Unexpected Error", e)
                 return -2
             }
         }
@@ -201,30 +175,25 @@ const gptResponse = {
             return flag;
         }
     },
+
     textingResponse: async (token, prompt) => {
         const flag = await useCredits(token, 'texting')
         const verifyToken = jwt.verify(token, 'secretKey')
         const user_id = verifyToken.userId
         const user = await User.findOne({ _id: user_id });
-
         if (flag[0] === 1) {
             const client = new OpenAI({
                 apiKey: process.env.OPENAI_API_KEY
             });
             try {
-                console.log("texting:", prompt)
-
                 let newprompt = {
                     role: 'user',
                     content: `${textingPrompt}  ${prompt}`
                 }
-
                 if (flag[1] !== '') {
-                    console.log("newPropt-------", flag[1]);
                     newprompt = flag[1]
                     return newprompt
                 } else {
-                    console.log("-----", newprompt);
                     const response = await client.chat.completions.create({
                         model: "gpt-3.5-turbo",
                         messages: [newprompt],
@@ -239,7 +208,6 @@ const gptResponse = {
                 }
             }
             catch (e) {
-                console.log("Unexpected error", e)
                 return -2
             }
         }
@@ -251,11 +219,9 @@ const gptResponse = {
         } else {
             return flag;
         }
-
-
     },
-    ppvResponse: async (token, prompt) => {
 
+    ppvResponse: async (token, prompt) => {
         const verifyToken = jwt.verify(token, 'secretKey')
         const user_id = verifyToken.userId
         const user = await User.findOne({ _id: user_id });
@@ -265,21 +231,14 @@ const gptResponse = {
                 apiKey: process.env.OPENAI_API_KEY
             });
             try {
-                console.log("ppv", prompt)
-
-                console.log("hehejehjeh", ppvPrompt, prompt)
-                console.log("------------------------------------")
                 let newprompt = {
                     role: 'user',
                     content: `${ppvPrompt}  ${prompt}`
                 }
-
                 if (flag[1] !== '') {
-                    console.log("newPropt-------", flag[1]);
                     newprompt = flag[1]
                     return newprompt
                 } else {
-                    console.log("-----", newprompt);
                     const response = await client.chat.completions.create({
                         model: "gpt-3.5-turbo",
                         messages: [newprompt],
@@ -294,7 +253,6 @@ const gptResponse = {
                 }
             }
             catch (e) {
-                console.log("Unexpected Error", e)
                 return -2
             }
         }
@@ -307,13 +265,13 @@ const gptResponse = {
             return flag;
         }
     },
+
     questionResponse: async (token, prompt) => {
         const verifyToken = jwt.verify(token, 'secretKey')
         const user_id = verifyToken.userId
         const user = await User.findOne({ _id: user_id });
         const flag = await useCredits(token, 'question')
         if (flag[0] === 1) {
-
             const client = new OpenAI({
                 apiKey: process.env.OPENAI_API_KEY
             });
@@ -323,11 +281,10 @@ const gptResponse = {
                     content: `${questionPrompt}  ${prompt}`
                 }
                 if (flag[1] !== '') {
-                    console.log("newPropt-------", flag[1]);
+
                     newprompt = flag[1]
                     return newprompt
                 } else {
-                    console.log("-----", newprompt);
                     const response = await client.chat.completions.create({
                         model: "gpt-3.5-turbo",
                         messages: [newprompt],
@@ -342,7 +299,6 @@ const gptResponse = {
                 }
             } catch (e) {
                 let errorMsg;
-                console.log("eeeeee", e.message)
                 return -2
             }
         }
@@ -354,31 +310,26 @@ const gptResponse = {
         } else {
             return flag;
         }
-
     },
+
     sextingResponse: async (token, prompt) => {
         const verifyToken = jwt.verify(token, 'secretKey')
         const user_id = verifyToken.userId
         const user = await User.findOne({ _id: user_id });
         const flag = await useCredits(token, 'sexting')
-        console.log("flag----", flag);
         if (flag[0] === 1) {
             const client = new OpenAI({
                 apiKey: process.env.OPENAI_API_KEY
             });
             try {
-                // prompt[0].content += sextingPrompt + flag[1]
                 let newprompt = {
                     role: 'user',
                     content: `${sextingPrompt}  ${prompt}`
                 }
-
                 if (flag[1] !== '') {
-                    console.log("newPropt-------", flag[1]);
                     newprompt = flag[1]
                     return newprompt
                 } else {
-                    console.log("-----", newprompt);
                     const response = await client.chat.completions.create({
                         model: "gpt-3.5-turbo",
                         messages: [newprompt],
@@ -405,15 +356,14 @@ const gptResponse = {
         } else {
             return flag;
         }
-
     },
 
-    updatePrompts: async (jwtToken, prompts, emoji) => {
+    updatePrompts: async (jwtToken, prompts, isEmoji) => {
         try {
-            if(emoji === "Yes"){
-                emoji = true;
-            }else{
-                emoji = false;
+            if (isEmoji === "yes") {
+                isEmoji = true;
+            } else {
+                eisEmojimoji = false;
             }
             const verifyToken = jwt.verify(jwtToken, 'secretKey')
             const user_id = verifyToken.userId
@@ -422,7 +372,7 @@ const gptResponse = {
                 user.sexting_prompt = prompts.sexting,
                 user.ppv_prompt = prompts.ppv,
                 user.question_prompt = prompts.question
-                user.isEmoji = emoji
+            user.isEmoji = isEmoji
             await user.save()
         }
         catch (e) {
