@@ -13,9 +13,7 @@ function createAudioFile(audioDataUrl, fileName) {
     return audioFile;
 }
 
-
 const protectedController = {
-
     setOFA: async (req, res) => {
         try {
             let token = req.headers.authorization
@@ -34,6 +32,7 @@ const protectedController = {
             res.status(500).json({ statusCode: 99 })
         }
     },
+
     getOFA: async (req, res) => {
         try {
             let token = req.headers.authorization
@@ -71,9 +70,9 @@ const protectedController = {
             res.status(500).json({ statusCode: 99 })
         }
     },
+
     createStripeSession: async (req, res) => {
         try {
-            console.log("Creating new stripe session")
             let token = req.headers.authorization
             if (token) {
                 if (token.includes('Bearer'))
@@ -91,32 +90,27 @@ const protectedController = {
         catch (e) {
             res.status(500).json({ statusCode: 99 })
         }
-
-
-
     },
+
     stripeWebhook: async (req, res) => {
         try {
             const sig = req.headers['stripe-signature'];
             let event;
-            console.log("sig forwarded:", sig, "Our sig", process.env.STRIPE_ENDPOINT_SECRET);
             event = stripe.webhooks.constructEvent(req.body, sig, process.env.STRIPE_ENDPOINT_SECRET);
-            console.log("type",event.type)
             switch (event.type) {
                 case 'payment_intent.succeeded':
                     const updateBalance = await protectedService.updateUserBalance(req.body)
                     res.status(200).send(`Success`);
                     break;
                 default:
-                    console.log(`Unhandled event type ${event.type}`);
                     res.status(200).send('Unhandled webhook event: only listening to payment_intent.succeeded')
             }
         } catch (err) {
-            console.log("Stripe Error", err.message)
             res.status(400).send(`Webhook Error: ${err.message}`);
             return;
         }
     },
+
     getPayments: async (req, res) => {
         try {
             let token = req.headers.authorization
@@ -131,12 +125,12 @@ const protectedController = {
                     res.send({ history: paymentHistory })
                 }
             }
-
         }
         catch (e) {
             res.status(500).json({ statusCode: 99 })
         }
     },
+
     changePass: async (req, res) => {
         try {
             let token = req.headers.authorization
@@ -155,8 +149,7 @@ const protectedController = {
         catch (e) {
             res.status(500).json({ statusCode: 99 })
         }
-
     }
-
 }
+
 module.exports = protectedController

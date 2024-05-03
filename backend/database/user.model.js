@@ -31,7 +31,7 @@ const userSchema = new mongoose.Schema({
       relationship: {
         type: String,
         enum: ["single", "girlfriend", "openrelationship", "other"],
-        default : 'single'
+        default: 'single'
       }
     },
     typeOfcontent: {
@@ -61,7 +61,6 @@ const userSchema = new mongoose.Schema({
 });
 
 userSchema.methods.comparePassword = async function comparePassword(password) {
-  console.log(password, this.password)
   const bcryptedPass = await decryptedPassword(password, this.password)
   if (bcryptedPass)
     return true

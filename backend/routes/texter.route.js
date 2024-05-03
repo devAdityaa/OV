@@ -1,9 +1,7 @@
 const express = require('express');
 const router = express.Router();
-
 // Importing user controller
 const gptController = require('../controllers/gptController');
-
 
 router.post('/vocalShort', gptController.getShortResponse);
 router.post('/vocalLong', gptController.getLongResponse);
@@ -14,6 +12,5 @@ router.post('/vocalSexting', gptController.getSextingResponse);
 router.post('/vocalTTS', gptController.getVocalResponse);
 router.post('/generateVoice', gptController.genVoice);
 router.post('/updatePrompts', gptController.updatePrompts);
-
 
 module.exports = router;
