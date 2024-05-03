@@ -11,6 +11,7 @@ const gptController = {
                 if(token.includes('Bearer'))
                 token = token.split(' ')[1]
                 const response = await gptResponse.shortResponse(token, messages)
+                
                 if(response!==-1 && response!==-2){
                     res.status(200).json({statusCode:100,'short-response':response})
                 }
@@ -55,7 +56,7 @@ const gptController = {
         //[{ 'role': 'user', 'content': `${command.body.text}` }];
         try{
             let token = req.headers.authorization
-            const messages = req.body
+            const messages = req.body.messages
             if(token){
                 if(token.includes('Bearer'))
                 token = token.split(' ')[1]
@@ -100,6 +101,7 @@ const gptController = {
     },
     getQuestionResponse : async (req,res)=>{
         //[{ 'role': 'user', 'content': `${command.body.text}` }];
+       
         try{
             let token = req.headers.authorization
             const messages = req.body.messages
@@ -199,11 +201,12 @@ const gptController = {
 
     updatePrompts: async (req, res)=>{
         try{
+            let emoji = req.body.emoji
             let token = req.headers.authorization
             if(token){
                 if(token.includes('Bearer'))
                 token = token.split(' ')[1]
-                const getVoice = await gptResponse.updatePrompts(token, req.body.userPrompts)
+                const getVoice = await gptResponse.updatePrompts(token, req.body.userPrompts ,emoji)
                 if(getVoice!==-1){
                     res.status(200).json({statusCode:100})
                 }

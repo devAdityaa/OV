@@ -5,6 +5,7 @@ const userRouter = require('./routes/texter.route');
 const authRouter = require('./routes/auth.router')
 const protectedRouter = require('./routes/protected.router')
 const stripeRouter = require('./routes/stripe.router')
+const createDataRouter = require('./routes/creatorData.router')
 const authenticateUser = require('./authMiddleware/jwtAuth')
 require('dotenv').config()
 const stripe = require('stripe')(process.env.STRIPE_SECRET)
@@ -31,7 +32,8 @@ app.use((req, res, next) => {
 
 app.use('/onlyvocal', authenticateUser, userRouter);
 app.use('/auth',  authRouter)
-app.use('/protected', authenticateUser, protectedRouter)
+app.use('/protected',authenticateUser, protectedRouter)
+app.use('/createdata',authenticateUser, createDataRouter)
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
