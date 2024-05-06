@@ -35,8 +35,9 @@ const userSchema = new mongoose.Schema({
       }
     },
     typeOfcontent: {
-      question: { type: String, default: '' },
-      answer: { type: Array, default: '' }
+      content: { type: Array, default: '' },
+      communication : { type: Array, default: '' },
+      sortOfContent : { type: Array, default: '' }
     },
     physicalAttributes: {
       height: { type: String, default: '' },
@@ -49,12 +50,21 @@ const userSchema = new mongoose.Schema({
     },
     socialMedia: { instagram: { type: String, default: '' }, tiktok: { type: String, default: '' }, snapchatLink: { type: String, default: '' }, },
     personalInterest: {
-      question: { type: String, default: '' },
-      answer: { type: String, default: '' }
+      work: { type: String, default: '' },
+      smoke: { type: String, default: '' },
+      drink: { type: String, default: '' },
+      partying: { type: String, default: '' },
+      hobbies: { type: String, default: '' },
+      color: { type: String, default: '' },
+      food: { type: String, default: '' },
+      show: { type: String, default: '' },
+      movie: { type: String, default: '' },
+      music: { type: String, default: '' },
+      book: { type: String, default: '' },
+      game: { type: String, default: '' },
     },
     additionalInformation: {
-      question: { type: String, default: '' },
-      answer: { type: String, default: '' }
+      additional: { type: String, default: '' },
     },
   },
   createdAt: { type: Date, default: Date.now },
