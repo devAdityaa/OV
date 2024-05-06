@@ -12,31 +12,30 @@ const creatorData = async (req, res) => {
             const user_id = verifyToken.userId
             const user = await User.findOne({ _id: user_id });
 
-            if (data.basicPersonalInformation) {
-                user.creatorData.basicPersonalInformation = data.basicPersonalInformation;
+            if (data.creatorData.basicPersonalInformation) {
+                user.creatorData.basicPersonalInformation = data.creatorData.basicPersonalInformation;
             }
 
-            if (data.typeOfcontent) {
-                user.creatorData.typeOfcontent = data.typeOfcontent;
+            if (data.creatorData.typeOfcontent) {
+                user.creatorData.typeOfcontent = data.creatorData.typeOfcontent;
             }
 
-            if (data.additionalInformation) {
-                user.creatorData.additionalInformation = data.additionalInformation;
+            if (data.creatorData.additionalInformation) {
+                user.creatorData.additionalInformation = data.creatorData.additionalInformation;
             }
 
-            if (data.socialMedia) {
-                user.creatorData.socialMedia = data.socialMedia;
+            if (data.creatorData.socialMedia) {
+                user.creatorData.socialMedia = data.creatorData.socialMedia;
             }
 
-            if (data.personalInterest) {
-                user.creatorData.personalInterest = data.personalInterest;
+            if (data.creatorData.personalInterest) {
+                user.creatorData.personalInterest = data.creatorData.personalInterest;
             }
 
-            if (data.additionalInformation) {
-                user.creatorData.additionalInformation = data.additionalInformation;
+            if (data.creatorData.additionalInformation) {
+                user.creatorData.additionalInformation = data.creatorData.additionalInformation;
             }
-
-            await user.save()
+            await user.save();
         }
         res.send(data)
     }
