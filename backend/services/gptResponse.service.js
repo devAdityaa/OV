@@ -315,7 +315,7 @@ const gptResponse = {
                 isEmoji = true;
             } else {
                 eisEmojimoji = false;
-            }
+            }       
             const verifyToken = jwt.verify(jwtToken, 'secretKey')
             const user_id = verifyToken.userId
             const user = await User.findOne({ _id: user_id });
