@@ -5,11 +5,11 @@ const gptController = {
     getShortResponse: async (req, res) => {
         try {
             let token = req.headers.authorization
-            const messages = req.body.messages
+            let message = req.body.message;
             if (token) {
                 if (token.includes('Bearer'))
                     token = token.split(' ')[1]
-                const response = await gptResponse.shortResponse(token, messages)
+                const response = await gptResponse.shortResponse(token, message)
 
                 if (response !== -1 && response !== -2) {
                     res.status(200).json({ statusCode: 100, 'short-response': response })
@@ -28,11 +28,11 @@ const gptController = {
     getLongResponse: async (req, res) => {
         try {
             let token = req.headers.authorization
-            const messages = req.body.messages
+            let message = req.body.message;
             if (token) {
                 if (token.includes('Bearer'))
                     token = token.split(' ')[1]
-                const response = await gptResponse.longResponse(token, messages)
+                const response = await gptResponse.longResponse(token, message)
                 if (response !== -1 && response !== -2) {
                     res.status(200).json({ statusCode: 100, 'long-response': response })
                 }
@@ -50,11 +50,11 @@ const gptController = {
     getTextingResponse: async (req, res) => {
         try {
             let token = req.headers.authorization
-            const messages = req.body.messages
+            let message = req.body.message;
             if (token) {
                 if (token.includes('Bearer'))
                     token = token.split(' ')[1]
-                const response = await gptResponse.textingResponse(token, messages)
+                const response = await gptResponse.textingResponse(token, message);
                 if (response !== -1 && response !== -2) {
                     res.status(200).json({ statusCode: 100, 'texting-response': response })
                 }
@@ -73,11 +73,11 @@ const gptController = {
     getPpvResponse: async (req, res) => {
         try {
             let token = req.headers.authorization
-            const messages = req.body.messages
+            let message = req.body.message;
             if (token) {
                 if (token.includes('Bearer'))
                     token = token.split(' ')[1]
-                const response = await gptResponse.ppvResponse(token, messages)
+                const response = await gptResponse.ppvResponse(token, message)
                 if (response !== -1 && response !== -2) {
                     res.status(200).json({ statusCode: 100, 'ppv-response': response })
                 }
@@ -95,11 +95,11 @@ const gptController = {
     getQuestionResponse: async (req, res) => {
         try {
             let token = req.headers.authorization
-            const messages = req.body.messages
+            let message = req.body.message;
             if (token) {
                 if (token.includes('Bearer'))
                     token = token.split(' ')[1]
-                const response = await gptResponse.questionResponse(token, messages)
+                const response = await gptResponse.questionResponse(token, message)
                 if (response !== -1 && response !== -2) {
                     res.status(200).json({ statusCode: 100, 'question-response': response })
                 }
@@ -117,11 +117,11 @@ const gptController = {
     getSextingResponse: async (req, res) => {
         try {
             let token = req.headers.authorization
-            const messages = req.body.messages
+            let message = req.body.message;
             if (token) {
                 if (token.includes('Bearer'))
                     token = token.split(' ')[1]
-                const response = await gptResponse.sextingResponse(token, messages)
+                const response = await gptResponse.sextingResponse(token, message)
                 if (response !== -1 && response !== -2) {
                     res.status(200).json({ statusCode: 100, 'sexting-response': response })
                 }

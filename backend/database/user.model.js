@@ -7,8 +7,8 @@ const userSchema = new mongoose.Schema({
   password: { type: String, required: true },
   subscription: { type: Boolean, default: false },
   currentPlan: { type: String, default: 'Basic/Free' },
-  textMessagesLeft: { type: Number, default: 20 },
-  voiceMessagesLeft: { type: Number, default: 10 },
+  textcredit: { type: Number, default: 20 },
+  voicecredit: { type: Number, default: 10 },
   linkedAccounts: { type: Number, default: 0 },
   linked_accounts_info: { type: Array, default: [] },
   aiVoiceId: { type: String, default: '' },
@@ -30,8 +30,8 @@ const userSchema = new mongoose.Schema({
       silbings: { type: String, default: '' },
       relationship: {
         type: String,
-        enum: ["single", "girlfriend", "openrelationship", "other"],
-        default: 'single'
+        enum: ["Single", "Girlfriend", "Openrelationship", "Other"],
+        default: "Single"
       }
     },
     typeOfcontent: {

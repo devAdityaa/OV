@@ -6,8 +6,8 @@ require("dotenv").config();
 const useCredits = async (user, service) => {
     if (service === 'genVoice') {
         const amt = 1
-        if (user.voiceMessagesLeft >= amt) {
-            user.voiceMessagesLeft -= amt
+        if (user.voicecredit >= amt) {
+            user.voicecredit -= amt
             await user.save()
             return 1
         }
@@ -16,8 +16,8 @@ const useCredits = async (user, service) => {
     }
     else if (service === 'tts') {
         const amt = 1
-        if (user.voiceMessagesLeft >= amt) {
-            user.voiceMessagesLeft -= amt
+        if (user.voicecredit >= amt) {
+            user.voicecredit -= amt
             await user.save()
             return 1
         }
