@@ -1,6 +1,7 @@
 const User = require('../database/user.model');
 const jwt = require('jsonwebtoken')
-const axios = require('axios')
+const axios = require('axios');
+const { encryptedPassword } = require('../helper/password.helpers');
 require('dotenv').config()
 const stripe = require('stripe')(process.env.STRIPE_SECRET)
 
@@ -204,6 +205,7 @@ const protectedService = {
                 throw new Error("User not found")
             if (cpass !== user.password)
                 return -1
+            npass = await encryptedPassword(npass,10)
             user.password = npass
             await user.save();
             return 1

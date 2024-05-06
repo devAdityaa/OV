@@ -178,9 +178,6 @@ const gptResponse = {
 
     textingResponse: async (token, prompt) => {
         const flag = await useCredits(token, 'texting')
-        const verifyToken = jwt.verify(token, 'secretKey')
-        const user_id = verifyToken.userId
-        const user = await User.findOne({ _id: user_id });
         if (flag[0] === 1) {
             const client = new OpenAI({
                 apiKey: process.env.OPENAI_API_KEY
@@ -190,22 +187,13 @@ const gptResponse = {
                     role: 'user',
                     content: `${textingPrompt}  ${prompt}`
                 }
-                if (flag[1] !== '') {
-                    newprompt = flag[1]
-                    return newprompt
-                } else {
-                    const response = await client.chat.completions.create({
-                        model: "gpt-3.5-turbo",
-                        messages: [newprompt],
-                        temperature: 0.5
-                    });
-                    var responseText = response.choices[0]['message']['content'];
-                    if (flag[1] === '') {
-                        user.texting_prompt = responseText
-                        await user.save()
-                    }
-                    return responseText;
-                }
+                const response = await client.chat.completions.create({
+                    model: "gpt-3.5-turbo",
+                    messages: [newprompt],
+                    temperature: 0.5
+                });
+                const responseText = response.choices[0]['message']['content'];
+                return responseText;
             }
             catch (e) {
                 return -2
@@ -222,9 +210,6 @@ const gptResponse = {
     },
 
     ppvResponse: async (token, prompt) => {
-        const verifyToken = jwt.verify(token, 'secretKey')
-        const user_id = verifyToken.userId
-        const user = await User.findOne({ _id: user_id });
         const flag = await useCredits(token, 'ppv')
         if (flag[0] === 1) {
             const client = new OpenAI({
@@ -235,22 +220,13 @@ const gptResponse = {
                     role: 'user',
                     content: `${ppvPrompt}  ${prompt}`
                 }
-                if (flag[1] !== '') {
-                    newprompt = flag[1]
-                    return newprompt
-                } else {
-                    const response = await client.chat.completions.create({
-                        model: "gpt-3.5-turbo",
-                        messages: [newprompt],
-                        temperature: 0.5
-                    });
-                    var responseText = response.choices[0]['message']['content'];
-                    if (flag[1] === '') {
-                        user.ppv_prompt = responseText
-                        await user.save()
-                    }
-                    return responseText;
-                }
+                const response = await client.chat.completions.create({
+                    model: "gpt-3.5-turbo",
+                    messages: [newprompt],
+                    temperature: 0.5
+                });
+                const responseText = response.choices[0]['message']['content'];
+                return responseText;
             }
             catch (e) {
                 return -2
@@ -267,9 +243,6 @@ const gptResponse = {
     },
 
     questionResponse: async (token, prompt) => {
-        const verifyToken = jwt.verify(token, 'secretKey')
-        const user_id = verifyToken.userId
-        const user = await User.findOne({ _id: user_id });
         const flag = await useCredits(token, 'question')
         if (flag[0] === 1) {
             const client = new OpenAI({
@@ -280,23 +253,13 @@ const gptResponse = {
                     role: 'user',
                     content: `${questionPrompt}  ${prompt}`
                 }
-                if (flag[1] !== '') {
-
-                    newprompt = flag[1]
-                    return newprompt
-                } else {
-                    const response = await client.chat.completions.create({
-                        model: "gpt-3.5-turbo",
-                        messages: [newprompt],
-                        temperature: 0.5
-                    });
-                    var responseText = response.choices[0]['message']['content'];
-                    if (flag[1] === '') {
-                        user.question_prompt = responseText
-                        await user.save()
-                    }
-                    return responseText;
-                }
+                const response = await client.chat.completions.create({
+                    model: "gpt-3.5-turbo",
+                    messages: [newprompt],
+                    temperature: 0.5
+                });
+                const responseText = response.choices[0]['message']['content'];
+                return responseText;
             } catch (e) {
                 let errorMsg;
                 return -2
@@ -313,9 +276,6 @@ const gptResponse = {
     },
 
     sextingResponse: async (token, prompt) => {
-        const verifyToken = jwt.verify(token, 'secretKey')
-        const user_id = verifyToken.userId
-        const user = await User.findOne({ _id: user_id });
         const flag = await useCredits(token, 'sexting')
         if (flag[0] === 1) {
             const client = new OpenAI({
@@ -326,22 +286,13 @@ const gptResponse = {
                     role: 'user',
                     content: `${sextingPrompt}  ${prompt}`
                 }
-                if (flag[1] !== '') {
-                    newprompt = flag[1]
-                    return newprompt
-                } else {
-                    const response = await client.chat.completions.create({
-                        model: "gpt-3.5-turbo",
-                        messages: [newprompt],
-                        temperature: 0.5
-                    });
-                    var responseText = response.choices[0]['message']['content'];
-                    if (flag[1] === '') {
-                        user.sexting_prompt = responseText
-                        await user.save()
-                    }
-                    return responseText;
-                }
+                const response = await client.chat.completions.create({
+                    model: "gpt-3.5-turbo",
+                    messages: [newprompt],
+                    temperature: 0.5
+                });
+                const responseText = response.choices[0]['message']['content'];
+                return responseText;
             }
             catch (e) {
                 let errorMsg;
