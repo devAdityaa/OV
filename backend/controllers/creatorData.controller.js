@@ -20,12 +20,12 @@ const creatorData = async (req, res) => {
                 user.creatorData.typeOfcontent = data.creatorData.typeOfcontent;
             }
 
-            if (data.creatorData.additionalInformation) {
-                user.creatorData.additionalInformation = data.creatorData.additionalInformation;
-            }
-
             if (data.creatorData.socialMedia) {
                 user.creatorData.socialMedia = data.creatorData.socialMedia;
+            }
+
+            if (data.creatorData.physicalAttributes) {
+                user.creatorData.physicalAttributes = data.creatorData.physicalAttributes;
             }
 
             if (data.creatorData.personalInterest) {
