@@ -189,7 +189,7 @@ const gptController = {
 
     updatePrompts: async (req, res) => {
         try {
-            let isEmoji = req.body.isEmoji
+            let isEmoji = req.body.emoji
             let token = req.headers.authorization
             if (token) {
                 if (token.includes('Bearer'))
