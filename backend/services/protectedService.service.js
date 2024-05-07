@@ -14,8 +14,8 @@ function base64ToBlob(base64String) {
 const useCredits = async (user, service) => {
     if (service === 'tts') {
         const amt = 1
-        if (user.textMessagesLeft >= amt) {
-            user.textMessagesLeft -= 1
+        if (user.textcredit >= amt) {
+            user.textcredit -= 1
             await user.save()
         }
         else
@@ -172,8 +172,8 @@ const protectedService = {
             newPlan = 'Premium';
         }
         user.currentPlan = newPlan;
-        user.textMessagesLeft += increaseText
-        user.voiceMessagesLeft += increaseVoice
+        user.textcredit += increaseText
+        user.voicecredit += increaseVoice
         await user.save()
     },
 

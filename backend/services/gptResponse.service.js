@@ -24,10 +24,10 @@ What kind of content the creator often deals in with fans: Pictures, Videos,
 How the creator wants to be their communication with the fans: Soft and Teasing, Naughty, Hardcore,
 What are the sort of things the creator sells : Sextape, Toys,Where does the creator work/study brooklyn,Additional information provided by the creator: Keep the messages very short`
 
-const shortPrompt = `Act like an OnlyFans model who is directly chatting with her fan. Generate a short and meaningful response. Keep the response short and quirky.You must not include any reference to the speaker in your response like 'Fan:' or 'You:' or ‘Creator’. You must keep the response in first person.
+const shortPrompt = `Act like an OnlyFans model who is directly chatting with her fan. Generate a short and meaningful response. Keep the response short and quirky.You must not include any reference to the speaker in your response like 'Fan:' or 'You:' or ‘Creator’. You must keep the response in first person. You have to give response on the context of the text:
 `
 
-const longPrompt = ` Act like an OnlyFans model who is directly chatting with her fan. Generate a short and meaningful message. Your goal is to try to seduce the fans through the art of sexting and make the users feel horny. You can use some erotic words to achive your goal. You must not include any reference to your response like 'client:' or 'user:'. Keep the messages short and quirky.
+const longPrompt = ` Act like an OnlyFans model who is directly chatting with her fan. Generate a long and meaningful message. Your goal is to try to seduce the fans through the art of sexting and make the users feel horny. You can use some erotic words to achive your goal. You must not include any reference to your response like 'client:' or 'user:'. Keep the messages short and quirky. You have to give response on the context of the text:
 `
 
 const textingPrompt = `Act like an OnlyFans model who is directly chatting with her fan. Generate a short and meaningful response. Keep the response short and quirky.You must not include any reference to the speaker in your response like 'Fan:' or 'You:' or ‘Creator’. You must keep the response in first person.
@@ -108,10 +108,10 @@ const useCredits = async (token, service) => {
 }
 
 const gptResponse = {
-    shortResponse: async (token, fanMessage) => {
+    shortResponse: async (token, fanMessage, textInput) => {
         const flag = await useCredits(token, 'short-res')
         const prefix = "Recent messages from your Fan \n";
-        const fanMessages = prefix + `Fan :  ${fanMessage}`
+        const fanMessages = prefix + fanMessage.map(message => "Fan: " + message);
         if (flag[0] === 1) {
             const client = new OpenAI({
                 apiKey: process.env.OPENAI_API_KEY
@@ -119,7 +119,7 @@ const gptResponse = {
             try {
                 let newprompt = [{
                     role: 'system',
-                    content: shortPrompt
+                    content: `${shortPrompt}  ${textInput}`
                 }, {
                     role: 'user',
                     content: `${followPoints}
@@ -149,10 +149,10 @@ const gptResponse = {
         }
     },
 
-    longResponse: async (token, fanMessage) => {
+    longResponse: async (token, fanMessage, textInput) => {
         const flag = await useCredits(token, 'long-res')
         const prefix = "Recent messages from your Fan \n";
-        const fanMessages = prefix + `Fan :  ${fanMessage}`
+        const fanMessages = prefix + fanMessage.map(message => "Fan: " + message).join("\n");
         if (flag[0] === 1) {
             const client = new OpenAI({
                 apiKey: process.env.OPENAI_API_KEY
@@ -160,7 +160,7 @@ const gptResponse = {
             try {
                 let newprompt = [{
                     role: 'system',
-                    content: longPrompt
+                    content: `${longPrompt}  ${textInput}`
                 }, {
                     role: 'user',
                     content: `${followPoints}
@@ -193,7 +193,7 @@ const gptResponse = {
     textingResponse: async (token, fanMessage) => {
         const flag = await useCredits(token, 'texting')
         const prefix = "Recent messages from your Fan \n";
-        const fanMessages = prefix + `Fan :  ${fanMessage}`
+        const fanMessages = prefix + fanMessage.map(message => "Fan: " + message);
         if (flag[0] === 1) {
             const client = new OpenAI({
                 apiKey: process.env.OPENAI_API_KEY
@@ -234,7 +234,7 @@ const gptResponse = {
     ppvResponse: async (token, fanMessage) => {
         const flag = await useCredits(token, 'ppv')
         const prefix = "Recent messages from your Fan \n";
-        const fanMessages = prefix + `Fan :  ${fanMessage}`
+        const fanMessages = prefix + fanMessage.map(message => "Fan: " + message);
         if (flag[0] === 1) {
             const client = new OpenAI({
                 apiKey: process.env.OPENAI_API_KEY
@@ -275,7 +275,7 @@ const gptResponse = {
     questionResponse: async (token, fanMessage) => {
         const flag = await useCredits(token, 'question')
         const prefix = "Recent messages from your Fan \n";
-        const fanMessages = prefix + `Fan :  ${fanMessage}`
+        const fanMessages = prefix + fanMessage.map(message => "Fan: " + message);
         if (flag[0] === 1) {
             const client = new OpenAI({
                 apiKey: process.env.OPENAI_API_KEY
@@ -316,7 +316,7 @@ const gptResponse = {
     sextingResponse: async (token, fanMessage) => {
         const flag = await useCredits(token, 'sexting')
         const prefix = "Recent messages from your Fan \n";
-        const fanMessages = prefix + `Fan :  ${fanMessage}`
+        const fanMessages = prefix + fanMessage.map(message => "Fan: " + message);
         if (flag[0] === 1) {
             const client = new OpenAI({
                 apiKey: process.env.OPENAI_API_KEY

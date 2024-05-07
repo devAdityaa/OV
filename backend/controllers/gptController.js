@@ -5,11 +5,12 @@ const gptController = {
     getShortResponse: async (req, res) => {
         try {
             let token = req.headers.authorization
+            let textInput = req.body.content
             let message = req.body.message;
             if (token) {
                 if (token.includes('Bearer'))
                     token = token.split(' ')[1]
-                const response = await gptResponse.shortResponse(token, message)
+                const response = await gptResponse.shortResponse(token, message, textInput)
 
                 if (response !== -1 && response !== -2) {
                     res.status(200).json({ statusCode: 100, 'short-response': response })
@@ -28,11 +29,12 @@ const gptController = {
     getLongResponse: async (req, res) => {
         try {
             let token = req.headers.authorization
+            let textInput = req.body.content
             let message = req.body.message;
             if (token) {
                 if (token.includes('Bearer'))
                     token = token.split(' ')[1]
-                const response = await gptResponse.longResponse(token, message)
+                const response = await gptResponse.longResponse(token, message, textInput)
                 if (response !== -1 && response !== -2) {
                     res.status(200).json({ statusCode: 100, 'long-response': response })
                 }
