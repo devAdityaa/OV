@@ -55,24 +55,24 @@ const shortPrompt = `Act like an OnlyFans model who is directly chatting with he
 const longPrompt = ` Act like an OnlyFans model who is directly chatting with her fan. Generate a long and meaningful message. Your goal is to try to seduce the fans through the art of sexting and make the users feel horny. You can use some erotic words to achive your goal. You must not include any reference to your response like 'client:' or 'user:'. Keep the messages short and quirky. You have to give response on the context of the text:
 `
 
-const textingPrompt = `Act like an OnlyFans model chatting directly with a fan. Respond to the last message in a short, sweet, and meaningful way, using first-person perspective. The response should align with the message content and should not include any additional information or repeated responses. Avoid directly referencing the fan, like 'Fan:' or 'You:'. Keep the response unique and light-hearted, avoiding repetitive answers.
-`
+const textingPrompt = `Assume the role of an OnlyFans model directly responding to a fan's message, using the first-person perspective. The response should directly address the content or emotion expressed in the last message and maintain a short, sweet, and meaningful conversation. It should align with the message content and should not include any additional information or repeated responses. Avoid directly referencing the fan, such as 'Fan:' or 'You:'. Keep the response unique and light-hearted, avoiding repetitive answers.` 
 
-const ppvPrompt = `Act like an OnlyFans model who is directly chatting with her fan.Generate a short and meaningful response.Your response should be such that the fan will be indulge to buy a pay - per - view(PPV) from your.Your goal is to sell the fan a PPV, you must try to seduce the user if need be.You must not include any reference to the speaker in your response like 'Fan:' or 'You:', keep the response in first person.Keep the messages short and quirky.
-`
 
-const questionPrompt = `Act like an OnlyFans model who is directly chatting with her fan. Generate a short and meaningful message. Your task is to hit up a conversation with an inactive or dormant Fan. It may be a question or a spicy message. You must not include any reference to the speaker in your response like 'Fan:' or 'You:', keep the response in first person. Keep the messages short and quirky.
-`
+const ppvPrompt = `Act like an OnlyFans model who is directly chatting with her fan.Generate a short and meaningful response.Your response should be such that the fan will be indulge to buy a pay - per - view(PPV) from your.Your goal is to sell the fan a PPV, you must try to seduce the user if need be.You must not include any reference to the speaker in your response like 'Fan:' or 'You:', keep the response in first person. Keep the messages short, quirky and avoid hastage and ppv word `
 
-const sextingPrompt = `Act like an OnlyFans model who is directly chatting with her fan. Generate a short and meaningful message. Your goal is to try to seduce the fans through the art of sexting and make the users feel horny. You can use some erotic words to achive your goal. You must not include any reference to your response like 'client:' or 'user:'. Keep the messages short and quirky. \n"+
-`
+
+const questionPrompt = `Act like an OnlyFans model who is directly chatting with her fan. Your task is to generate a question that specifically addresses the last message. The question should encourage the fan to focus on a particular detail of the scenario, enhancing their engagement. Keep the tone light-hearted and teasing.
+You must not include any reference to the speaker in your response like 'Fan:' or 'You:'.`
+
+
+const sextingPrompt = `Act like an OnlyFans model who is directly chatting with her fan. Your goal is to generate a short, direct, and highly engaging sexting message that responds seductively to the last message, drawing from the ongoing conversation. The response should be provocative and focused on enhancing the erotic interaction. Use vivid and enticing language to captivate and seduce the fan, making them feel immersed in the experience. Ensure the message is quirky and retains a light-hearted tone without any reference to 'client:' or 'user:'. Keep the messages concise to maintain impact and engagement.`
 
 function formatTemplate(template, data) {
     return template.replace(/{(\w+)}/g, (_, key) => data[key] || '');
 }
 
 function getCreatorDetails(user) {
-    const creatorData = user.creatorData; 
+    const creatorData = user.creatorData;
     return formatTemplate(creatorDetailTemplate, {
         name: creatorData.basicPersonalInformation.name,
         nickname: creatorData.basicPersonalInformation.nickName,
@@ -186,7 +186,7 @@ const gptResponse = {
                 apiKey: process.env.OPENAI_API_KEY
             });
             try {
-              const creatorDetails = getCreatorDetails(user)
+                const creatorDetails = getCreatorDetails(user)
                 let newprompt = [{
                     role: 'system',
                     content: `${shortPrompt}  ${textInput}`
@@ -267,8 +267,8 @@ const gptResponse = {
         const user_id = verifyToken.userId
         const user = await User.findOne({ _id: user_id });
         const flag = await useCredits(token, 'texting')
-        // const prefix = "Recent messages from your Fan \n";
-        // const fanMessages = prefix + fanMessage.map(message => "Fan: " + message);
+        const last_messages = "last_message:-\n" + fanMessage[fanMessage.length - 1]
+        const conversation_context = "Chat History:-\n" + fanMessage.map(message => message).join("\n");
         if (flag[0] === 1) {
             const client = new OpenAI({
                 apiKey: process.env.OPENAI_API_KEY
@@ -276,14 +276,14 @@ const gptResponse = {
             const creatorDetails = getCreatorDetails(user)
             try {
                 let newprompt = [{
-                    role: 'system',
-                    content: textingPrompt
-                }, {
                     role: 'user',
                     content: `
-                    ${fanMessage[fanMessage.length-1]}
-                    ${creatorDetails} `
+                    ${last_messages}
+                    ${textingPrompt}
+                    ${conversation_context}
+                    ${creatorDetails}`
                 }]
+                console.log("---text----",newprompt);
                 const response = await client.chat.completions.create({
                     model: "gpt-3.5-turbo",
                     messages: newprompt,
@@ -311,8 +311,8 @@ const gptResponse = {
         const user_id = verifyToken.userId
         const user = await User.findOne({ _id: user_id });
         const flag = await useCredits(token, 'ppv')
-        const prefix = "Recent messages from your Fan \n";
-        const fanMessages = prefix + fanMessage.map(message => "Fan: " + message);
+        const last_message = fanMessage[fanMessage.length - 1]
+        const conversation_context = "Chat History:-\n" + fanMessage.map(message => message).join("\n");
         if (flag[0] === 1) {
             const client = new OpenAI({
                 apiKey: process.env.OPENAI_API_KEY
@@ -320,17 +320,19 @@ const gptResponse = {
             const creatorDetails = getCreatorDetails(user)
             try {
                 let newprompt = [{
-                    role: 'system',
-                    content: ppvPrompt
-                }, {
                     role: 'user',
-                    content: `${fanMessages}
+                    content: `
+                    ${ppvPrompt}
+                    ${last_message}
+                    ${conversation_context}
                     ${creatorDetails}`
                 }]
+                console.log("-------",newprompt);
+
                 const response = await client.chat.completions.create({
                     model: "gpt-3.5-turbo",
                     messages: newprompt,
-                    temperature: 0.5
+                    temperature: 0.2
                 });
                 const responseText = response.choices[0]['message']['content'];
                 return responseText;
@@ -354,8 +356,8 @@ const gptResponse = {
         const user_id = verifyToken.userId
         const user = await User.findOne({ _id: user_id });
         const flag = await useCredits(token, 'question')
-        const prefix = "Recent messages from your Fan \n";
-        const fanMessages = prefix + fanMessage.map(message => "Fan: " + message);
+        const last_messages = "last_message:-" + fanMessage[fanMessage.length - 1]
+        const conversation_context = "Chat History:-\n" + fanMessage.map(message => message).join("\n");
         if (flag[0] === 1) {
             const client = new OpenAI({
                 apiKey: process.env.OPENAI_API_KEY
@@ -363,17 +365,18 @@ const gptResponse = {
             const creatorDetails = getCreatorDetails(user)
             try {
                 let newprompt = [{
-                    role: 'system',
-                    content: questionPrompt
-                }, {
                     role: 'user',
-                    content: `${fanMessages},
+                    content: `
+                    ${last_messages}
+                    ${questionPrompt}
+                    ${conversation_context}
                     ${creatorDetails}`
                 }]
+                console.log("-------",newprompt);
                 const response = await client.chat.completions.create({
                     model: "gpt-3.5-turbo",
                     messages: newprompt,
-                    temperature: 0.5
+                    temperature: 0.2
                 });
                 const responseText = response.choices[0]['message']['content'];
                 return responseText;
@@ -397,8 +400,8 @@ const gptResponse = {
         const user_id = verifyToken.userId
         const user = await User.findOne({ _id: user_id });
         const flag = await useCredits(token, 'sexting')
-        const prefix = "Recent messages from your Fan \n";
-        const fanMessages = prefix + fanMessage.map(message => "Fan: " + message);
+        const last_messages = "last_message:-" + fanMessage[fanMessage.length - 1]
+        const conversation_context = "Chat History:-\n" + fanMessage.map(message => message).join("\n");
         if (flag[0] === 1) {
             const client = new OpenAI({
                 apiKey: process.env.OPENAI_API_KEY
@@ -406,17 +409,18 @@ const gptResponse = {
             const creatorDetails = getCreatorDetails(user)
             try {
                 let newprompt = [{
-                    role: 'system',
-                    content: sextingPrompt
-                }, {
                     role: 'user',
-                    content: `${fanMessages}
+                    content: `
+                    ${last_messages}
+                    ${sextingPrompt}
+                    ${conversation_context}
                     ${creatorDetails}`
                 }]
+                console.log("-------",newprompt);
                 const response = await client.chat.completions.create({
                     model: "gpt-3.5-turbo",
                     messages: newprompt,
-                    temperature: 0.5
+                    temperature: 0.2
                 });
                 const responseText = response.choices[0]['message']['content'];
                 return responseText;
