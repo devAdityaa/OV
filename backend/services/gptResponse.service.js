@@ -283,7 +283,6 @@ const gptResponse = {
                     ${conversation_context}
                     ${creatorDetails}`
                 }]
-                console.log("---text----",newprompt);
                 const response = await client.chat.completions.create({
                     model: "gpt-3.5-turbo",
                     messages: newprompt,
@@ -327,8 +326,6 @@ const gptResponse = {
                     ${conversation_context}
                     ${creatorDetails}`
                 }]
-                console.log("-------",newprompt);
-
                 const response = await client.chat.completions.create({
                     model: "gpt-3.5-turbo",
                     messages: newprompt,
@@ -372,7 +369,6 @@ const gptResponse = {
                     ${conversation_context}
                     ${creatorDetails}`
                 }]
-                console.log("-------",newprompt);
                 const response = await client.chat.completions.create({
                     model: "gpt-3.5-turbo",
                     messages: newprompt,
@@ -416,7 +412,6 @@ const gptResponse = {
                     ${conversation_context}
                     ${creatorDetails}`
                 }]
-                console.log("-------",newprompt);
                 const response = await client.chat.completions.create({
                     model: "gpt-3.5-turbo",
                     messages: newprompt,
